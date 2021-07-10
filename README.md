@@ -1,4 +1,4 @@
-# root
+# root🌱
 
 *Bot für den Discord Server "Fernuni Discord Admins"*
 
@@ -12,5 +12,5 @@
 
 ## Mitwirkung
 
-Dir fehlt bei Waltraud eine Funktion? Dann kannst du einen [Issue](https://github.com/FU-Hagen-Discord/root/issues)
+Dir fehlt bei root🌱 eine Funktion? Dann kannst du einen [Issue](https://github.com/FU-Hagen-Discord/root/issues)
 erstellen, oder einen der bestehenden in Angriff nehmen 💪
