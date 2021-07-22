@@ -4,7 +4,7 @@ import discord
 from discord.ext import commands
 from dotenv import load_dotenv
 
-from cogs import help, links, polls
+from cogs import help, links, polls, roles
 
 # .env file is necessary in the same directory, that contains several strings.
 load_dotenv()
@@ -19,6 +19,7 @@ bot = commands.Bot(command_prefix='!', help_command=None, activity=discord.Game(
 bot.add_cog(polls.Polls(bot))
 bot.add_cog(links.Links(bot))
 bot.add_cog(help.Help(bot))
+bot.add_cog(roles.Roles(bot))
 
 
 def get_reaction(reactions):
