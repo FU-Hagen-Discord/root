@@ -24,22 +24,22 @@ class Welcome(commands.Cog):
         channel = await self.bot.fetch_channel(self.channel_id)
         message = await channel.fetch_message(self.message_id)
 
-        embed = discord.Embed(title=":rocket: FernUni Föderation :rocket:",
+        embed = discord.Embed(title=":rocket: __FernUni Föderation__ :rocket:",
                               description="Willkommen auf dem interdisziplinären Server von und für FernUni-Studierende! Hier können FernUni-Studierende aus allen Fachrichtungen in dem Austausch treten, Ideen austauschen, gemeinsam an Projekten arbeiten: viel Potenzial für gegenseitige Bereicherung :handshake:")
 
-        embed.add_field(name=":sparkles: Entstehung",
+        embed.add_field(name=":sparkles: **Entstehung**",
                         value="Die Betreiber:innen der verschiedenen FernUni-Discordservern haben sich vernetzt, um zusammen zu arbeiten. Aus mehreren Richtungen wurde der Wunsch nach einer fachübergreifender Plattform geäußert und daraufhin ist dieser Föderationsserver entstanden!", 
                         inline=False)   
                
-        embed.add_field(name=":robot: Server-Bot",
-                        value=f"Ich heiße root. In <#{os.getenv('DISCORD_BOTUEBUNGSPLATZ_CHANNEL')}> kannst du meine verschiedenen Befehle ausprobieren. Wenn du dort `!help` schreibst, sende ich dir per Direktnachricht einen Überblick von meinen Funktionen.", 
+        embed.add_field(name=":robot: **Server-Bot**",
+                        value=f"Ich heiße root. Beim <#{os.getenv('DISCORD_BOTUEBUNGSPLATZ_CHANNEL')}> kannst du meine verschiedenen Befehle ausprobieren. Wenn du dort `!help` schreibst, sende ich dir per Direktnachricht einen Überblick von meinen Funktionen.", 
                         inline=False)
                 
-        embed.add_field(name=":placard: Rollen",
+        embed.add_field(name=":placard: **Rollen**",
                         value=f"Du kannst dir eine Discord-Rolle bei <#{os.getenv('DISCORD_ROLLEN_CHANNEL')}> aussuchen, die deine Fakultätszugehörigkeit wiederspiegelt.",
                         inline=False)
 
-        embed.add_field(name=":scroll: Regeln",
+        embed.add_field(name=":scroll: **Regeln**",
                         value="Verhalte dich respektvoll und versuche Rücksicht auf deine Mitmenschen zu nehmen. Außerdem sind - wie überall auf Discord - diese Community-Richtlinien zu beachten: <https://discord.com/guidelines>.",
                         inline=False)  
 
