@@ -2,6 +2,7 @@ import os
 
 import discord
 from discord.ext import commands
+from dislash import *
 from dotenv import load_dotenv
 
 from cogs import appointments, calmdown, help, links, polls, roles, support, text_commands, timer, welcome
@@ -26,6 +27,9 @@ bot.add_cog(support.Support(bot))
 bot.add_cog(text_commands.TextCommands(bot))
 bot.add_cog(timer.Timer(bot))
 bot.add_cog(welcome.Welcome(bot))
+
+SlashClient(bot, show_warnings=True)  # Stellt den Zugriff auf die Buttons bereit
+
 
 def get_reaction(reactions):
     """ Returns the reaction, that is equal to the specified PIN_EMOJI,
