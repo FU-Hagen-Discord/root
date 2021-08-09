@@ -77,7 +77,7 @@ class Roles(commands.Cog):
         channel = await self.bot.fetch_channel(self.channel_id)
         message = None if self.role_message_id == 0 else await channel.fetch_message(self.role_message_id)
 
-        embed = discord.Embed(title="Vergabe von Studiengangs-Rollen",
+        embed = discord.Embed(title="Vergabe von Fakultäts-Rollen",
                               description="Durch klicken auf die entsprechende Reaktion kannst du dir die damit assoziierte Rolle zuweisen, oder entfernen. Dies funktioniert so, dass ein Klick auf die Reaktion die aktuelle Zuordnung dieser Rolle ändert. Das bedeutet, wenn du die Rolle, die mit :scales: assoziiert ist, schon hast, aber die Reaktion noch nicht ausgewählt hast, dann wird dir bei einem Klick auf die Reaktion diese Rolle wieder weggenommen. ")
 
         value = f""
