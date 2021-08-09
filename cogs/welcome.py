@@ -36,7 +36,7 @@ class Welcome(commands.Cog):
                         inline=False)
 
         embed.add_field(name=":placard: Rollen",
-                        value=f"Du kannst dir eine Discord-Rolle bei <#{os.getenv('DISCORD_ROLLEN_CHANNEL')}> aussuchen, die deine Fakultätszugehörigkeit wiederspiegelt.",
+                        value=f"Du kannst dir eine Discord-Rolle bei <#{os.getenv('DISCORD_ROLE_CHANNEL')}> aussuchen, die deine Fakultätszugehörigkeit wiederspiegelt.",
                         inline=False)
 
         embed.add_field(name=":scroll: Regeln",
@@ -52,7 +52,7 @@ class Welcome(commands.Cog):
     async def on_member_join(self, member):
         await utils.send_dm(member,
                             f"Herzlich Willkommen bei der FernUni Föderation! Alle notwendigen Informationen, die du für den Einstieg brauchst, sowie die wenige Regeln, die aufgestellt sind, findest du in <#{self.channel_id}>\n"
-                            f"Du darfst dir außerdem gerne im Channel <#{os.getenv('DISCORD_ROLLEN_CHANNEL')}> die passende Rolle zu deiner Fakultät zuweisen lassen. \n\n"
+                            f"Du darfst dir außerdem gerne im Channel <#{os.getenv('DISCORD_ROLE_CHANNEL')}> die passende Rolle zu deiner Fakultät zuweisen lassen. \n\n"
                             f"Falls du Fragen haben solltest, kannst du sie gerne bei der <#{os.getenv('DISCORD_OFFTOPIC_CHANNEL')}> stellen. Wenn du bei etwas Hilfe vom Moderationsteam brauchst, schreib mir doch eine private Nachricht, ich werde sie weiterleiten :writing_hand:.\n\n"
                             f"Viel Spaß beim erkunden des Servers und bis bald!")
 
