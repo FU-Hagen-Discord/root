@@ -2,9 +2,10 @@ import os
 
 import discord
 from discord.ext import commands
+from dislash import *
 from dotenv import load_dotenv
 
-from cogs import help, links, polls, roles
+from cogs import appointments, calmdown, help, links, polls, roles, support, text_commands, timer, welcome
 
 # .env file is necessary in the same directory, that contains several strings.
 load_dotenv()
@@ -16,10 +17,18 @@ PIN_EMOJI = "📌"
 intents = discord.Intents.default()
 intents.members = True
 bot = commands.Bot(command_prefix='!', help_command=None, activity=discord.Game(ACTIVITY), intents=intents)
-bot.add_cog(polls.Polls(bot))
-bot.add_cog(links.Links(bot))
+bot.add_cog(appointments.Appointments(bot))
+bot.add_cog(calmdown.Calmdown(bot))
 bot.add_cog(help.Help(bot))
+bot.add_cog(links.Links(bot))
+bot.add_cog(polls.Polls(bot))
 bot.add_cog(roles.Roles(bot))
+bot.add_cog(support.Support(bot))
+bot.add_cog(text_commands.TextCommands(bot))
+bot.add_cog(timer.Timer(bot))
+bot.add_cog(welcome.Welcome(bot))
+
+SlashClient(bot, show_warnings=True)  # Stellt den Zugriff auf die Buttons bereit
 
 
 def get_reaction(reactions):
