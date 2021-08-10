@@ -19,7 +19,7 @@ def is_mod(ctx):
     roles = author.roles
 
     for role in roles:
-        if role.id == int(os.getenv("DISCORD_MOD_ROLE")):
+        if role.id in [int(os.getenv("DISCORD_MOD_ROLE")), int(os.getenv("DISCORD_ADMIN_ROLE"))]:
             return True
 
     return False
