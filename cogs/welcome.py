@@ -43,6 +43,10 @@ class Welcome(commands.Cog):
                         value="Verhalte dich respektvoll und versuche Rücksicht auf deine Mitmenschen zu nehmen. Außerdem sind - wie überall auf Discord - diese Community-Richtlinien zu beachten: <https://discord.com/guidelines>.",
                         inline=False)
 
+        embed.add_field(name=":link: Einladungslink",
+                        value="Mitstudierende kannst du mit folgendem Link einladen: https://discord.gg/x4nB6bhmgm.",
+                        inline=False)
+
         if message:
             await message.edit(content="", embed=embed)
         else:
