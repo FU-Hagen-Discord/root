@@ -25,26 +25,30 @@ class Welcome(commands.Cog):
         message = None if self.message_id == 0 else await channel.fetch_message(self.message_id)
 
         embed = discord.Embed(title=":rocket: __FernUni Föderation__ :rocket:",
-                              description="Willkommen auf dem interdisziplinären Server von und für FernUni-Studierende! Hier können FernUni-Studierende aus allen Fachrichtungen in dem Austausch treten, Ideen austauschen, gemeinsam an Projekten arbeiten: viel Potenzial für gegenseitige Bereicherung :handshake:")
+                              description="Willkommen auf dem interdisziplinären Server von und für FernUni-Studierende! Hier können FernUni-Studierende aus allen Fachrichtungen in Austausch treten, Ideen austauschen und gemeinsam an Projekten arbeiten: viel Potenzial für gegenseitige Bereicherung :handshake:")
 
         embed.add_field(name=":sparkles: Entstehung",
-                        value="Die Betreiber:innen der verschiedenen FernUni-Discordservern haben sich vernetzt, um zusammen zu arbeiten. Aus mehreren Richtungen wurde der Wunsch nach einer fachübergreifender Plattform geäußert und daraufhin ist dieser Föderationsserver entstanden!",
+                        value="Die Betreiber:innen der verschiedenen FernUni-Discordserver haben sich vernetzt, um zusammenzuarbeiten. Aus mehreren Richtungen wurde der Wunsch nach einer fachübergreifender Plattform geäußert und daraufhin ist dieser Föderationsserver entstanden!",
                         inline=False)
-
+        
         embed.add_field(name=":robot: Server-Bot",
-                        value=f"Ich heiße root. Beim <#{os.getenv('DISCORD_BOTUEBUNGSPLATZ_CHANNEL')}> kannst du meine verschiedenen Befehle ausprobieren. Wenn du dort `!help` schreibst, sende ich dir per Direktnachricht einen Überblick von meinen Funktionen.",
+                        value=f"Ich heiße root. Beim <#{os.getenv('DISCORD_BOTUEBUNGSPLATZ_CHANNEL')}> kannst du meine verschiedenen Befehle ausprobieren. Wenn du dort `!help` schreibst, sende ich dir per Direktnachricht einen Überblick meiner Funktionen.",
                         inline=False)
-
+        
         embed.add_field(name=":placard: Rollen",
-                        value=f"Du kannst dir eine Discord-Rolle bei <#{os.getenv('DISCORD_ROLE_CHANNEL')}> aussuchen, die deine Fakultätszugehörigkeit wiederspiegelt.",
+                        value=f"Du kannst dir eine Discord-Rolle bei <#{os.getenv('DISCORD_ROLE_CHANNEL')}> aussuchen, die deine Fakultätszugehörigkeit widerspiegelt.",
                         inline=False)
-
+        
         embed.add_field(name=":scroll: Regeln",
                         value="Verhalte dich respektvoll und versuche Rücksicht auf deine Mitmenschen zu nehmen. Außerdem sind - wie überall auf Discord - diese Community-Richtlinien zu beachten: <https://discord.com/guidelines>.",
                         inline=False)
-
+        
         embed.add_field(name=":link: Einladungslink",
                         value="Mitstudierende kannst du mit folgendem Link einladen: https://discord.gg/x4nB6bhmgm.",
+                        inline=False)
+        
+        embed.add_field(name=" ",
+                        value="Viel Vergnügen auf dem Server!",
                         inline=False)
 
         if message:
