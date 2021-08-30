@@ -44,7 +44,7 @@ class Calmdown(commands.Cog):
         try:
             user = await guild.fetch_member(int(user_id))
             if inform_user:
-                await utils.send_dm(user, f"Die Mute-Rolle wurde dir nun wieder entnommen.")
+                await utils.send_dm(user, f"Die Mute-Rolle wurde nun wieder entfernt.")
             await user.remove_roles(role)
         except discord.errors.NotFound:
             pass
@@ -66,7 +66,7 @@ class Calmdown(commands.Cog):
                 await self.unsilence(user_id, data['guild_id'], inform_user=True)
 
     @help(
-        brief="Weist einem User die Calmdown-Rolle zu.",
+        brief="Weist einem User die Mute-Rolle zu.",
         example="!mute @user 1d",
         parameters={
             "user": "Mention des Users, der eine Auszeit benötigt",
@@ -91,7 +91,7 @@ class Calmdown(commands.Cog):
                 return
             duration = utils.to_minutes(duration)
             if duration == 0:
-                await ctx.channel.send(f"{ctx.author.mention} hat {user.mention} von der **Auszeit** geholt.")
+                await ctx.channel.send(f"{ctx.author.mention} hat {user.mention} aus der **Auszeit** geholt.")
                 await self.unsilence(user.id, guild.id, inform_user=False)
                 return
 
@@ -99,9 +99,9 @@ class Calmdown(commands.Cog):
             till = now + datetime.timedelta(minutes=duration)
             self.silenced_users[str(user.id)] = {"duration": till.strftime(self.fmt), "guild_id": guild.id}
             self.save()
-            await ctx.channel.send(f"{ctx.author.mention} hat {user.mention} die **Calmdown-Rolle** vergeben.")
+            await ctx.channel.send(f"{ctx.author.mention} hat an {user.mention} die **Mute-Rolle** vergeben.")
             await user.add_roles(role)
             if duration < 300:
-                await utils.send_dm(user, f"Dir wurde für {duration} Minuten die **Mute-Rolle** vergeben. Du kannst weiterhin alle Kanäle lesen, aber erst nach Ablauf der Zeit wieder an Gesprächen teilnehmen.")
+                await utils.send_dm(user, f"Dir wurde für {duration} Minuten die **Mute-Rolle** zugewiesen. Du kannst weiterhin alle Kanäle lesen, aber erst nach Ablauf der Zeit wieder an Gesprächen teilnehmen.")
             else:
                 await utils.send_dm(user, f"Bis {till.strftime(self.fmt)} Uhr trägst du die Mute-Rolle. Du kannst weiterhin alle Kanäle lesen, aber erst nach Ablauf der Zeit wieder an Gesprächen teilnehmen.")
