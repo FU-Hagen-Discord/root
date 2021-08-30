@@ -20,6 +20,7 @@
   * [Kalenderfunktion](https://github.com/FU-Hagen-Discord/root/tree/master/cogs/appointments.py)
   * [Umfragefunktion](https://github.com/FU-Hagen-Discord/root/tree/master/cogs/polls.py)
   * Sammlung Nützlicher [Links](https://github.com/FU-Hagen-Discord/root/tree/master/cogs/links.py) in den Channels
+  * [News der Universität](https://github.com/FU-Hagen-Discord/root-bot/tree/master/cogs/news.py) werden in dem News-Channel weitergeleitet und verlinkt
 
 * [Text-Commands](https://github.com/FU-Hagen-Discord/root/tree/master/cogs/text_commands.py)
 
