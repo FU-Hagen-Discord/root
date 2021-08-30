@@ -25,14 +25,14 @@ class Welcome(commands.Cog):
         message = None if self.message_id == 0 else await channel.fetch_message(self.message_id)
 
         embed = discord.Embed(title=":rocket: __FernUni Föderation__ :rocket:",
-                              description="Willkommen auf dem interdisziplinären Server von und für FernUni-Studierende! Hier können FernUni-Studierende aus allen Fachrichtungen in Austausch treten, Ideen austauschen und gemeinsam an Projekten arbeiten: viel Potenzial für gegenseitige Bereicherung :handshake:")
+                              description="Willkommen auf dem interdisziplinären Server von und für FernUni-Studierende! Hier können FernUni-Studierende aus allen Fachrichtungen in Austausch treten, Ideen austauschen und gemeinsam an Projekten arbeiten: viel Potenzial für gegenseitige Bereicherung!")
 
         embed.add_field(name=":sparkles: Entstehung",
                         value="Die Betreiber:innen der verschiedenen FernUni-Discordserver haben sich vernetzt, um zusammenzuarbeiten. Aus mehreren Richtungen wurde der Wunsch nach einer fachübergreifender Plattform geäußert und daraufhin ist dieser Föderationsserver entstanden!",
                         inline=False)
         
         embed.add_field(name=":robot: Server-Bot",
-                        value=f"Ich heiße root. Beim <#{os.getenv('DISCORD_BOTUEBUNGSPLATZ_CHANNEL')}> kannst du meine verschiedenen Befehle ausprobieren. Wenn du dort `!help` schreibst, sende ich dir per Direktnachricht einen Überblick meiner Funktionen.",
+                        value=f"Ich bin root. Beim <#{os.getenv('DISCORD_BOTUEBUNGSPLATZ_CHANNEL')}> kannst du meine verschiedenen Befehle ausprobieren. Wenn du dort `!help` schreibst, sende ich dir per Direktnachricht einen Überblick meiner Funktionen.",
                         inline=False)
         
         embed.add_field(name=":placard: Rollen",
