@@ -67,7 +67,7 @@ class Welcome(commands.Cog):
     @commands.Cog.listener()
     async def on_member_update(self, before, after):
         if before.pending != after.pending and not after.pending:
-            channel = await self.bot.fetch_channel(int(os.getenv("DISCORD_OFFTOPIC_CHANNEL")))
+            channel = await self.bot.fetch_channel(int(os.getenv("DISCORD_GREETING_CHANNEL")))
             await channel.send(f"Willkommen <@!{before.id}> im Kreise der FernUni-Studierenden :student:")
 
     async def cog_command_error(self, ctx, error):
