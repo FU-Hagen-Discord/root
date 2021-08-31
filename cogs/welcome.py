@@ -47,7 +47,7 @@ class Welcome(commands.Cog):
                         value="Mitstudierende kannst du mit folgendem Link einladen: https://discord.gg/x4nB6bhmgm.",
                         inline=False)
         
-        embed.add_field(name=" ",
+        embed.add_field(name="\u200b",
                         value="Viel Vergnügen auf dem Server!",
                         inline=False)
 
