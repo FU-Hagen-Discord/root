@@ -44,7 +44,7 @@ class Welcome(commands.Cog):
                         inline=False)
         
         embed.add_field(name=":link: Einladungslink",
-                        value="Mitstudierende kannst du mit folgendem Link einladen: os.getenv('DISCORD_INVITE_LINK').",
+                        value=f"Mitstudierende kannst du mit folgendem Link einladen: os.getenv('DISCORD_INVITE_LINK').",
                         inline=False)
         
         embed.add_field(name="\u200b",
