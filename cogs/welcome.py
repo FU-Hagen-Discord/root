@@ -1,7 +1,7 @@
 import os
 
-import discord
-from discord.ext import commands
+import disnake
+from disnake.ext import commands
 
 import utils
 from cogs.help import help, handle_error
@@ -24,7 +24,7 @@ class Welcome(commands.Cog):
         channel = await self.bot.fetch_channel(self.channel_id)
         message = None if self.message_id == 0 else await channel.fetch_message(self.message_id)
 
-        embed = discord.Embed(title=":rocket: __FernUni Föderation__ :rocket:",
+        embed = disnake.Embed(title=":rocket: __FernUni Föderation__ :rocket:",
                               description="Willkommen auf dem interdisziplinären Server von und für FernUni-Studierende! Hier können FernUni-Studierende aus allen Fachrichtungen in Austausch treten, Ideen austauschen und gemeinsam an Projekten arbeiten: viel Potenzial für gegenseitige Bereicherung!")
 
         embed.add_field(name=":sparkles: Entstehung",
