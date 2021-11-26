@@ -1,7 +1,12 @@
 import os
 import re
+from datetime import datetime
 
 import disnake
+from dotenv import load_dotenv
+
+load_dotenv()
+DATE_TIME_FMT = os.getenv("DISCORD_DATE_TIME_FORMAT")
 
 
 async def send_dm(user, message, embed=None):
@@ -41,3 +46,19 @@ def to_minutes(time):
         return h * 60
 
     return int(time)
+
+
+def date_to_string(date: datetime):
+    return date.strftime(DATE_TIME_FMT)
+
+
+def date_from_string(date: str):
+    return datetime.strptime(date, DATE_TIME_FMT)
+
+
+async def files_from_attachments(attachments):
+    files = []
+    for attachment in attachments:
+        files.append(await attachment.to_file(spoiler=attachment.is_spoiler()))
+
+    return files
