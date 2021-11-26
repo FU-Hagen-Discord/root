@@ -4,7 +4,7 @@ import disnake
 from disnake.ext import commands
 from dotenv import load_dotenv
 
-from cogs import appointments, calmdown, help, links, polls, roles, support, text_commands, timer, welcome
+from cogs import appointments, calmdown, help, links, polls, roles, support, text_commands, timer, welcome, christmas
 
 # .env file is necessary in the same directory, that contains several strings.
 load_dotenv()
@@ -38,6 +38,7 @@ class Root(commands.Bot):
         self.add_cog(text_commands.TextCommands(self))
         self.add_cog(timer.Timer(self))
         self.add_cog(welcome.Welcome(self))
+        self.add_cog(christmas.Christmas(self))
 
 
 bot = Root()
