@@ -65,10 +65,25 @@ class Welcome(commands.Cog):
                             f"Viel Spaß beim erkunden des Servers und bis bald!")
 
     @commands.Cog.listener()
-    async def on_member_update(self, before, after):
-        if before.pending != after.pending and not after.pending:
-            channel = await self.bot.fetch_channel(int(os.getenv("DISCORD_GREETING_CHANNEL")))
-            await channel.send(f"Willkommen <@!{before.id}> im Kreise der FernUni-Studierenden :student:")
+    async def on_member_join(self, member):
+        channel = await self.bot.fetch_channel(self.channel_id)
+             welcome_messages = [
+                f"Willkommen {member.mention} auf dem Discordserver von und für Studierende aller Fakultäten der FernUni! :partying_face:",
+                f"Hi {member.mention}, herzlich willkommen! :hugging: ",
+                f"Hey {member.mention}, hast du Kuchen mitgebracht? :cake:",
+                f"Hey {member.mention} ist da! :partying_face:",
+                f"Hi {member.mention}, es sieht hier ein wenig leer aus - nicht wahr? Im <#{os.getenv('DISCORD_ROLE_CHANNEL')}> kannst du dir die Fakultätsrollen vergeben und das restliche Server freischalten :wink:",
+                f"Willkommen {member.mention}, hast du die <#{os.getenv('DISCORD_OFFTOPIC_CHANNEL')}> schon entdeckt? :seedling: Dort kann man über alles reden, was nicht studienspezifisch ist - #offtopic 😊. ",
+                f":wave: {member.mention}, erzähl gerne etwas über dich in <#{os.getenv('DISCORD_INTRODUCTION_CHANNEL')}>.",
+                f"Hallo {member.mention}! Mach es dir gemütlich und zögere nicht, mir per privaten Nachricht Fragen zu stellen, wenn du Hilfe vom Orga-Team brauchst :love_letter:",
+                f"Hey {member.mention}! Im Channel <#{os.getenv('DISCORD_POLL_SUGG_CHANNEL')}> kannst du Umfragen vorschlagen :ballot_box: "
+                f"Hallo {member.mention} und willkommen! Wusstest du schon? In <#{os.getenv('DISCORD_BOTUEBUNGSPLATZ_CHANNEL')}> kannst du meine Funktionalitäten ausprobieren. Schreib einfach !help für die Liste. Viel Spaß! ",
+             ]
+            
+            
+        msg = random.choice(welcome_messages)
+        await channel.send(msg)            
+            
 
     async def cog_command_error(self, ctx, error):
         await handle_error(ctx, error)
