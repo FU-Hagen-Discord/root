@@ -1,3 +1,6 @@
+import random
+import re
+
 import discord
 from discord import app_commands, Interaction
 from discord.ext import commands
@@ -16,6 +19,9 @@ class Welcome(commands.GroupCog, name="welcome", description="Neue Mitglieder Wi
     @app_commands.default_permissions(manage_guild=True)
     async def cmd_update_welcome(self, interaction: Interaction):
         await interaction.response.defer(ephemeral=True)
+        if not self.channel_id:
+            await interaction.edit_original_response(content="Diese Funktion steht hier nicht zur Verfügung")
+            return
         channel = await self.bot.fetch_channel(self.channel_id)
         message = None if self.message_id == 0 else await channel.fetch_message(self.message_id)
 
@@ -55,26 +61,30 @@ class Welcome(commands.GroupCog, name="welcome", description="Neue Mitglieder Wi
 
     @commands.Cog.listener()
     async def on_member_join(self, member):
-        if member.dm_channel is None:
-            await member.create_dm()
+        if self.config.get("dm_message"):
+            if member.dm_channel is None:
+                await member.create_dm()
 
-        await member.dm_channel.send(f"Herzlich Willkommen bei der FernUni Föderation! Alle notwendigen Informationen, "
-                                     f"die du für den Einstieg brauchst, sowie die wenige Regeln, die aufgestellt "
-                                     f"sind, findest du in <#{self.channel_id}>\n"
-                                     f"Du darfst dir außerdem gerne im Channel <#{self.config['role_channel']}> "
-                                     f"die passende Rolle zu deiner Fakultät zuweisen lassen. \n\n"
-                                     f"Falls du Fragen haben solltest, kannst du sie gerne bei der "
-                                     f"<#{self.config['offtopic_channel']}> stellen. Wenn du bei etwas Hilfe vom "
-                                     f"Moderationsteam brauchst, schreib mir doch eine private Nachricht, ich werde "
-                                     f"sie weiterleiten :writing_hand:.\n\n"
-                                     f"Viel Spaß beim erkunden des Servers und bis bald!")
+            await member.dm_channel.send(self.replace_variables(self.config["dm_message"]))
+
+        if self.config.get("greeting_messages") and self.config.get("greeting_on_join"):
+            channel = await self.bot.fetch_channel(self.config["greeting_channel"])
+            await channel.send(self.replace_variables(
+                random.choice(self.config["greeting_messages"]).replace("{user_id}", f"{member.id}")))
 
     @commands.Cog.listener()
     async def on_member_update(self, before, after):
-        if before.pending != after.pending and not after.pending:
-            channel = await self.bot.fetch_channel(self.config["greeting_channel"])
-            await channel.send(f"Willkommen <@!{before.id}> im Kreise der FernUni-Studierenden :student:")
+        if self.config.get("greeting_messages") and self.config.get("greeting_after_verification"):
+            if before.pending != after.pending and not after.pending:
+                channel = await self.bot.fetch_channel(self.config["greeting_channel"])
+                await channel.send(self.replace_variables(
+                    random.choice(self.config["greeting_messages"]).replace("{user_id}", f"{before.id}")))
 
+    def replace_variables(self, message: str) -> str:
+        return re.sub("\{[a-z_]+}", self.repl, message)
+
+    def repl(self, matchobj):
+        return f"{self.config.get(matchobj.group(0)[1:-1])}"
 
 async def setup(bot: commands.Bot) -> None:
     await bot.add_cog(Welcome(bot))
