@@ -49,7 +49,7 @@ class Roles(commands.Cog):
         await interaction.response.defer(ephemeral=True)
         channel = await self.bot.fetch_channel(self.channel_id)
         message = await channel.fetch_message(self.message_id) if self.message_id else None
-        view = RoleView(assignable_roles=self.config["extensions"][__name__.split(".")[-1]]["assignable_roles"])
+        view = RoleView(assignable_roles=self.assignable_roles)
 
         embed = discord.Embed(title="Such dir deine Rollen aus",
                               description="Durch Klicken auf den Button unter dieser Nachricht kannst du dir selbst "
