@@ -205,6 +205,11 @@ class CommandText(BaseModel):
     text = CharField()
     command = ForeignKeyField(Command, backref="texts")
 
+class SprachRohr(BaseModel):
+    url = CharField()
+    year = IntegerField()
+    issue = CharField()
+
 
 db.create_tables([Poll, PollChoice, PollChoiceChosen, Appointment, Attendee, Topic, Link, Timer, TimerAttendee, Command,
-                  CommandText], safe=True)
+                  CommandText, SprachRohr], safe=True)
