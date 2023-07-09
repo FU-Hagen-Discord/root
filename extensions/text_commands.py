@@ -108,7 +108,10 @@ class TextCommands(commands.GroupCog, name="commands", description="Text Command
             return
 
         if command := Command.get_or_none(Command.command == cmd):
-            if id >= 0:
+            if id is None:
+                await self.remove_command(command)
+                await interaction.edit_original_response(content=f"Text Command `{cmd}` wurde erfolgreich entfernt.")
+            else:
                 command_texts = list(command.texts)
                 if 0 <= id < len(command_texts):
                     await self.remove_text(command, command_texts, id)
@@ -116,9 +119,6 @@ class TextCommands(commands.GroupCog, name="commands", description="Text Command
                         content=f"Text {id} für Command `{cmd}` wurde erfolgreich entfernt")
                 else:
                     await interaction.edit_original_response(content=f"Ungültiger Index")
-            else:
-                await self.remove_command(command)
-                await interaction.edit_original_response(content=f"Text Command `{cmd}` wurde erfolgreich entfernt.")
         else:
             await interaction.edit_original_response(content=f"Command `{cmd}` nicht vorhanden!")
 
