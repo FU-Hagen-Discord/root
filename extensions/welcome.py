@@ -37,7 +37,7 @@ class Welcome(commands.GroupCog, name="welcome", description="Neue Mitglieder Wi
                         inline=False)
 
         embed.add_field(name=":placard: Rollen",
-                        value=f"Du kannst dir eine Discord-Rolle bei <#{self.config['role_channel']}> aussuchen, die deine Fakultätszugehörigkeit widerspiegelt.",
+                        value=f"Du kannst dir eine Discord-Rolle bei <id:customize> aussuchen, die deine Fakultätszugehörigkeit widerspiegelt.",
                         inline=False)
 
         embed.add_field(name=":scroll: Regeln",
