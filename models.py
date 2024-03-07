@@ -210,6 +210,9 @@ class SprachRohr(BaseModel):
     year = IntegerField()
     issue = CharField()
 
+class News(BaseModel):
+    link = CharField()
+    date = CharField()
 
 db.create_tables([Poll, PollChoice, PollChoiceChosen, Appointment, Attendee, Topic, Link, Timer, TimerAttendee, Command,
-                  CommandText, SprachRohr], safe=True)
+                  CommandText, SprachRohr, News], safe=True)
