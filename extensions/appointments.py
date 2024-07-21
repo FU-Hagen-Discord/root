@@ -1,4 +1,5 @@
 import asyncio
+import uuid
 from datetime import datetime, timedelta
 
 from discord import app_commands, errors, Interaction
@@ -9,17 +10,15 @@ from views.appointment_view import AppointmentView
 
 
 async def send_notification(appointment, channel):
-    message = f"Benachrichtigung!\nDer Termin \"{appointment.title}\" startet "
-
-    if appointment.reminder_sent:
-        message += f"jetzt! :loudspeaker: "
-    else:
-        message += f"<t:{int(appointment.date_time.timestamp())}:R>."
+    message = f"Erinnerung!"
 
     message += f"\n"
     message += " ".join([f"<@!{str(attendee.member_id)}>" for attendee in appointment.attendees])
 
-    await channel.send(message)
+    if appointment.reminder_sent:
+        return await channel.send(message, embed=appointment.get_embed(2))
+
+    return await channel.send(message, embed=appointment.get_embed(1), view=AppointmentView())
 
 
 @app_commands.guild_only()
@@ -40,11 +39,11 @@ class Appointments(commands.GroupCog, name="appointments", description="Handle A
                 try:
                     channel = await self.bot.fetch_channel(appointment.channel)
                     message = await channel.fetch_message(appointment.message)
-                    await send_notification(appointment, channel)
+                    new_message = await send_notification(appointment, channel)
+                    Appointment.update(message=new_message.id).where(Appointment.id == appointment.id).execute()
+                    await message.delete()
 
                     if appointment.reminder_sent:
-                        await message.delete()
-
                         if appointment.recurring == 0:
                             appointment.delete_instance(recursive=True)
                         else:
@@ -53,7 +52,7 @@ class Appointments(commands.GroupCog, name="appointments", description="Handle A
                             Appointment.update(reminder_sent=reminder_sent, date_time=new_date_time).where(
                                 Appointment.id == appointment.id).execute()
                             updated_appointment = Appointment.get(Appointment.id == appointment.id)
-                            new_message = await channel.send(embed=updated_appointment.get_embed(),
+                            new_message = await channel.send(embed=updated_appointment.get_embed(0),
                                                              view=AppointmentView())
                             Appointment.update(message=new_message.id).where(Appointment.id == appointment.id).execute()
                     else:
@@ -77,16 +76,16 @@ class Appointments(commands.GroupCog, name="appointments", description="Handle A
         channel = interaction.channel
         author_id = interaction.user.id
         try:
-            date_time = datetime.strptime(f"{date} {time}", "%d.%m.%Y %H:%M")
+            date_time = datetime.strptime(f"{date} {time}", self.bot.dt_format())
         except ValueError:
             await channel.send("Fehler! Ungültiges Datums und/oder Zeit Format!")
             return
 
         appointment = Appointment.create(channel=channel.id, message=0, date_time=date_time, reminder=reminder,
                                          title=title, description=description, author=author_id, recurring=recurring,
-                                         reminder_sent=reminder == 0)
+                                         reminder_sent=reminder == 0, uuid=uuid.uuid4())
 
-        await interaction.response.send_message(embed=appointment.get_embed(), view=AppointmentView())
+        await interaction.response.send_message(embed=appointment.get_embed(0), view=AppointmentView())
         message = await interaction.original_response()
         Appointment.update(message=message.id).where(Appointment.id == appointment.id).execute()
 
