@@ -33,7 +33,7 @@ class Welcome(commands.GroupCog, name="welcome", description="Neue Mitglieder Wi
                         inline=False)
 
         embed.add_field(name=":robot: Server-Bot",
-                        value=f"Ich bin root. Beim <#{self.config['botuebungsplatz_channel']}> kannst du meine verschiedenen Befehle ausprobieren. Wenn du dort `!help` schreibst, sende ich dir per Direktnachricht einen Überblick meiner Funktionen.",
+                        value=f"Ich bin root. Beim <#{self.config['botuebungsplatz_channel']}> kannst du meine verschiedenen Befehle ausprobieren. Wenn du dort `/` schreibst, werden dir meine Befehle als Vorschläge zur Autovervollständigung angezeigt, mitsamt jeweiliger Erklärung des Befehls.",
                         inline=False)
 
         embed.add_field(name=":placard: Rollen",
