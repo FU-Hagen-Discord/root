@@ -1,3 +1,5 @@
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=FU-Hagen-Discord_root&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=FU-Hagen-Discord_root) [![Bugs](https://sonarcloud.io/api/project_badges/measure?project=FU-Hagen-Discord_root&metric=bugs)](https://sonarcloud.io/summary/new_code?id=FU-Hagen-Discord_root) [![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=FU-Hagen-Discord_root&metric=code_smells)](https://sonarcloud.io/summary/new_code?id=FU-Hagen-Discord_root)
+
 # root🌱
 
 *Bot für den Discord Server "Fernuni Discord Admins"*
