@@ -14,7 +14,7 @@ class Polls(commands.GroupCog, name="poll", description="Handle Polls in Channel
     def __init__(self, bot):
         self.bot = bot
 
-    @app_commands.command(name="add", description="Erstelle eine Umfrage mit bis zu 20 Antwortmöglichkeiten.")
+    @app_commands.command(name="add", description="Erstelle eine anonyme Umfrage mit bis zu 20 Antwortmöglichkeiten.")
     @app_commands.describe(question="Welche Frage möchtest du stellen?", choice_a="1. Antwortmöglichkeit",
                            choice_b="2. Antwortmöglichkeit", choice_c="3. Antwortmöglichkeit",
                            choice_d="4. Antwortmöglichkeit", choice_e="5. Antwortmöglichkeit",
@@ -38,7 +38,7 @@ class Polls(commands.GroupCog, name="poll", description="Handle Polls in Channel
              choice_k, choice_l, choice_m, choice_n, choice_o, choice_p, choice_q, choice_r, choice_s, choice_t]) if
                    choice]
 
-        await interaction.response.send_message("Bereite Umfrage vor, bitte warten...", view=PollView())
+        await interaction.response.send_message("Bereite anonyme Umfrage vor, bitte warten...", view=PollView())
         message = await interaction.original_response()
         poll = Poll.create(question=question, author=interaction.user.id, channel=interaction.channel_id,
                            message=message.id)
