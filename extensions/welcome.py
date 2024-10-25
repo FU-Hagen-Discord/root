@@ -81,7 +81,7 @@ class Welcome(commands.GroupCog, name="welcome", description="Neue Mitglieder Wi
                     random.choice(self.config["greeting_messages"]).replace("{user_id}", f"{before.id}")))
 
     def replace_variables(self, message: str) -> str:
-        return re.sub("\{[a-z_]+}", self.repl, message)
+        return re.sub(r"\{[a-z_]+}", self.repl, message)
 
     def repl(self, matchobj):
         return f"{self.config.get(matchobj.group(0)[1:-1])}"

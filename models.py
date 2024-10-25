@@ -3,6 +3,7 @@ import uuid
 from datetime import datetime, timedelta
 
 import discord
+from discord import Colour
 from peewee import *
 from peewee import ModelSelect
 
@@ -64,19 +65,24 @@ class Appointment(BaseModel):
     reminder_sent = BooleanField()
     uuid = UUIDField(default=uuid.uuid4())
 
-    def get_embed(self) -> discord.Embed:
+    def get_embed(self, state: int) -> discord.Embed:
         attendees = self.attendees
-        embed = discord.Embed(title=self.title,
-                              description=f"Wenn du eine Benachrichtigung zum Beginn des Termins"
-                                          f"{f', sowie {self.reminder} Minuten vorher, ' if self.reminder > 0 else f''}"
-                                          f" erhalten möchtest, reagiere mit :thumbsup: auf diese Nachricht.",
-                              color=19607)
+        description = (f"- Durch Klicken auf Anmelden erhältst du eine Benachrichtigung zum Beginn des Termins"
+                       f"{f', sowie {self.reminder} Minuten vorher' if self.reminder > 0 else f''}.\n"
+                       f"- Durch Klicken auf Abmelden nimmst du deine vorherige Anmeldung wieder zurück und wirst "
+                       f"nicht benachrichtigt.") if state != 2 else ""
+        emoji = "📅" if state == 0 else ("📣" if state == 1 else "✅")
+        embed = discord.Embed(title=f"{emoji} __{self.title}__ {'findet jetzt statt.' if state == 2 else ''}",
+                              description=description)
+
+        embed.color = Colour.green() if state == 0 else Colour.yellow() if state == 1 else 19607
 
         if len(self.description) > 0:
             embed.add_field(name="Beschreibung", value=self.description, inline=False)
-        embed.add_field(name="Startzeitpunkt", value=f"<t:{int(self.date_time.timestamp())}:F>", inline=False)
-        if self.reminder > 0:
-            embed.add_field(name="Benachrichtigung", value=f"{self.reminder} Minuten vor dem Start", inline=False)
+
+        embed.add_field(name="Startzeitpunkt", value=self.get_start_time(state), inline=False)
+        if self.reminder > 0 and state == 0:
+            embed.add_field(name="Erinnerung", value=f"{self.reminder} Minuten vor dem Start", inline=False)
         if self.recurring > 0:
             embed.add_field(name="Wiederholung", value=f"Alle {self.recurring} Tage", inline=False)
         if len(attendees) > 0:
@@ -85,32 +91,48 @@ class Appointment(BaseModel):
 
         return embed
 
-    def get_ics_file(self) -> io.BytesIO:
-        fmt: str = "%Y%m%dT%H%M"
-        appointment: str = f"BEGIN:VCALENDAR\n" \
-                           f"PRODID:Boty McBotface\n" \
-                           f"VERSION:2.0\n" \
-                           f"BEGIN:VTIMEZONE\n" \
-                           f"TZID:Europe/Berlin\n" \
-                           f"BEGIN:DAYLIGHT\n" \
-                           f"TZOFFSETFROM:+0100\n" \
-                           f"TZOFFSETTO:+0200\n" \
-                           f"TZNAME:CEST\n" \
-                           f"DTSTART:19700329T020000\n" \
-                           f"RRULE:FREQ=YEARLY;BYDAY=-1SU;BYMONTH=3\n" \
-                           f"END:DAYLIGHT\n" \
-                           f"BEGIN:STANDARD\n" \
-                           f"TZOFFSETFROM:+0200\n" \
-                           f"TZOFFSETTO:+0100\n" \
-                           f"TZNAME:CET\n" \
-                           f"DTSTART:19701025T030000\n" \
-                           f"RRULE:FREQ=YEARLY;BYDAY=-1SU;BYMONTH=10\n" \
-                           f"END:STANDARD\n" \
-                           f"END:VTIMEZONE\n" \
-                           f"BEGIN:VEVENT\n" \
-                           f"DTSTAMP:{datetime.now().strftime(fmt)}00Z\n" \
-                           f"UID:{self.uuid}\n" \
-                           f"SUMMARY:{self.title}\n"
+    def remind_at(self) -> datetime:
+        if self.reminder_sent:
+            return self.date_time
+        elif datetime.now() >= self.date_time:
+            Appointment.update(reminder_sent=True).where(Appointment.id == self.id).execute()
+            self.reminder_sent = True
+            return self.date_time
+        else:
+            return self.date_time - timedelta(minutes=self.reminder)
+
+    def get_start_time(self, state) -> str:
+        if state == 0:
+            return f"<t:{int(self.date_time.timestamp())}:F>"
+
+        return f"<t:{int(self.date_time.timestamp())}:F> (<t:{int(self.date_time.timestamp())}:R>)"
+
+    def get_ics_file(self):
+        fmt = "%Y%m%dT%H%M"
+        appointment = f"BEGIN:VCALENDAR\n" \
+                      f"PRODID:Boty McBotface\n" \
+                      f"VERSION:2.0\n" \
+                      f"BEGIN:VTIMEZONE\n" \
+                      f"TZID:Europe/Berlin\n" \
+                      f"BEGIN:DAYLIGHT\n" \
+                      f"TZOFFSETFROM:+0100\n" \
+                      f"TZOFFSETTO:+0200\n" \
+                      f"TZNAME:CEST\n" \
+                      f"DTSTART:19700329T020000\n" \
+                      f"RRULE:FREQ=YEARLY;BYDAY=-1SU;BYMONTH=3\n" \
+                      f"END:DAYLIGHT\n" \
+                      f"BEGIN:STANDARD\n" \
+                      f"TZOFFSETFROM:+0200\n" \
+                      f"TZOFFSETTO:+0100\n" \
+                      f"TZNAME:CET\n" \
+                      f"DTSTART:19701025T030000\n" \
+                      f"RRULE:FREQ=YEARLY;BYDAY=-1SU;BYMONTH=10\n" \
+                      f"END:STANDARD\n" \
+                      f"END:VTIMEZONE\n" \
+                      f"BEGIN:VEVENT\n" \
+                      f"DTSTAMP:{datetime.now().strftime(fmt)}00Z\n" \
+                      f"UID:{self.uuid}\n" \
+                      f"SUMMARY:{self.title}\n"
         appointment += f"RRULE:FREQ=DAILY;INTERVAL={self.recurring}\n" if self.recurring else f""
         appointment += f"DTSTART;TZID=Europe/Berlin:{self.date_time.strftime(fmt)}00\n" \
                        f"DTEND;TZID=Europe/Berlin:{self.date_time.strftime(fmt)}00\n" \
@@ -122,7 +144,7 @@ class Appointment(BaseModel):
                        f"END:VALARM\n" \
                        f"END:VEVENT\n" \
                        f"END:VCALENDAR"
-        ics_file: io.BytesIO = io.BytesIO(appointment.encode("utf-8"))
+        ics_file = io.BytesIO(appointment.encode("utf-8"))
         return ics_file
 
 

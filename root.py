@@ -17,6 +17,10 @@ class Root(commands.Bot):
 
         await self.tree.sync()
 
+    @staticmethod
+    def dt_format():
+        return "%d.%m.%Y %H:%M"
+
 
 def load_config():
     fp = open("config.json", mode="r")
