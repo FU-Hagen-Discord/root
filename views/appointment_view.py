@@ -46,7 +46,7 @@ class AppointmentView(discord.ui.View):
     async def on_skip(self, interaction: discord.Interaction, button: discord.ui.Button):
         await interaction.response.defer(thinking=False)
         if appointment := Appointment.get_or_none(Appointment.message == interaction.message.id):
-            if interaction.user.id == appointment.author or utils.is_mod(interaction.user):
+            if interaction.user.id == appointment.author:
                 new_date_time = appointment.date_time + timedelta(days=appointment.recurring)
                 Appointment.update(date_time=new_date_time, reminder_sent=False).where(
                     Appointment.id == appointment.id).execute()
