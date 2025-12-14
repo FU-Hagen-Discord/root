@@ -65,6 +65,6 @@ class AppointmentView(discord.ui.View):
     async def delete(self, interaction: discord.Interaction, button: discord.ui.Button):
         await interaction.response.defer(thinking=False)
         if appointment := Appointment.get_or_none(Appointment.message == interaction.message.id):
-            if interaction.user.id == appointment.author:
+            if interaction.user.id == appointment.author or utils.is_mod(interaction.user):
                 appointment.delete_instance(recursive=True)
                 await interaction.message.delete()
